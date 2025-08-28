@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import "../Landing/Landing.css";
 import Mail from "../../Images/Meet-the-team.svg";
 import Header from '../Header/Header';
+import Footer from '../../Footer/Footer';
 
 function Contact() {
   const [name, setName] = useState('');
@@ -11,7 +12,7 @@ function Contact() {
   const handlemsg = async(e)=>{
     e.preventDefault();
     if(name === '' || email === '' || msg === ''){
-      alert("All filds are required!")
+      alert("All fields are required!")
     }else if((!/\S+@\S+\.\S+/.test(email))){
       alert("Enter a valid email!")
     }else{
@@ -34,9 +35,9 @@ function Contact() {
 
   return (
     <>
-    <Header/>
-    <div className="contact">
-        <h4>Contact Us</h4>
+    <Header />
+    <div className="contact" style={{backgroundColor:"#0E3A59"}}>
+        <h1>Contact Us</h1>
         <hr className="underLine"/>
         <div className="content">
           <img src={Mail} width={700} alt="" />
@@ -66,6 +67,7 @@ function Contact() {
           </form>
         </div>
       </div>
+      <Footer />
     </>
   )
 }

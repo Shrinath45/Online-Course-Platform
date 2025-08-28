@@ -1,34 +1,203 @@
-import './Header.css'
-import { NavLink } from 'react-router-dom'
-import Logo from '../../Images/logo.svg'
-import React from 'react'
+// import * as React from 'react';
+// import AppBar from '@mui/material/AppBar';
+// import Box from '@mui/material/Box';
+// import Toolbar from '@mui/material/Toolbar';
+// import IconButton from '@mui/material/IconButton';
+// import Typography from '@mui/material/Typography';
+// import Menu from '@mui/material/Menu';
+// import MenuIcon from '@mui/icons-material/Menu';
+// import Container from '@mui/material/Container';
+// import Button from '@mui/material/Button';
+// import MenuItem from '@mui/material/MenuItem';
+// import './Header.css';
+
+// const pages = ['Home', 'Courses', 'About', 'Contact'];
+
+// function Header() {
+//   const [anchorElNav, setAnchorElNav] = React.useState(null);
+
+//   const handleOpenNavMenu = (event) => {
+//     setAnchorElNav(event.currentTarget);
+//   };
+
+//   const handleCloseNavMenu = () => {
+//     setAnchorElNav(null);
+//   };
+
+//   return (
+//     <AppBar position="static" sx={{ backgroundColor: " #042439", padding :"10px"}}>
+//       <Container maxWidth="xl">
+//         <Toolbar disableGutters sx={{ justifyContent: "space-between" }}>
+          
+//           {/* Logo + Title */}
+//           <Box className="logo">
+//             <img src="/src/Pages/Images/logo.svg" alt="logo" />
+//             <h3>SkillForge</h3>
+//           </Box>
+
+//           {/* Desktop Navigation */}
+//           <Box className="link-nav" sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center' }}>
+//             <ul>
+//               {pages.map((page, index) => (
+//                 <li key={index}>
+//                   <a href={`/${page.toLowerCase()}`} className="deactive">
+//                     {page}
+//                   </a>
+//                 </li>
+//               ))}
+//             </ul>
+//           </Box>
+
+//           {/* Desktop Buttons */}
+//           <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 2 }}>
+//             <button>Sign In</button>
+//             <button>Sign Up</button>
+//           </Box>
+
+//           {/* Mobile Menu Button */}
+//           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+//             <IconButton
+//               size="large"
+//               aria-label="menu"
+//               aria-controls="menu-appbar"
+//               aria-haspopup="true"
+//               onClick={handleOpenNavMenu}
+//               color="inherit"
+//             >
+//               <MenuIcon />
+//             </IconButton>
+//             <Menu
+//               id="menu-appbar"
+//               anchorEl={anchorElNav}
+//               anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+//               keepMounted
+//               transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+//               open={Boolean(anchorElNav)}
+//               onClose={handleCloseNavMenu}
+//             >
+//               {[...pages, "Sign In", "Sign Up"].map((item, index) => (
+//                 <MenuItem key={index} onClick={handleCloseNavMenu}>
+//                   <Typography textAlign="center">{item}</Typography>
+//                 </MenuItem>
+//               ))}
+//             </Menu>
+//           </Box>
+
+//         </Toolbar>
+//       </Container>
+//     </AppBar>
+//   );
+// }
+
+// export default Header;
+
+import * as React from 'react';
+import { NavLink } from 'react-router-dom';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import Menu from '@mui/material/Menu';
+import MenuIcon from '@mui/icons-material/Menu';
+import Container from '@mui/material/Container';
+import MenuItem from '@mui/material/MenuItem';
+import './Header.css';
+
+const pages = [
+  { name: 'Home', path: '/' },
+  { name: 'Courses', path: '/courses' },
+  { name: 'About', path: '/about' },
+  { name: 'Contact', path: '/contact' }
+];
 
 function Header() {
+  const [anchorElNav, setAnchorElNav] = React.useState(null);
+
+  const handleOpenNavMenu = (event) => {
+    setAnchorElNav(event.currentTarget);
+  };
+
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
+
   return (
-    <>
-    <header className="flex items-center justify-evenly bg-[#042439] w-full fixed z-10 gap-[20rem]">
-      <NavLink to='/'>
-      <div className="logo">
-        <img src={Logo} alt="logo" />
-        <h1 className='text-2xl text-[#4E84C1] font-bold'>Shiksharthee</h1>
-      </div>
-      </NavLink>
-      <div className="link-nav">
-        <ul>
-          <li><NavLink to='/' className={({isActive}) => isActive ? "active" : "deactive" }> Home </NavLink></li>
-          <li><NavLink to='/courses' className={({isActive}) => isActive ? "active" : "deactive"}> Courses </NavLink></li>
-          <li><NavLink to='/about' className={({isActive}) => isActive ? "active" : "deactive"}> About </NavLink></li>
-          <li><NavLink to='/contact' className={({isActive}) => isActive ? "active" : "deactive"}> Contact us </NavLink></li>
-        </ul>
-      </div>
-      <div className='flex gap-6'>
-        <NavLink to='/login' className={({isActive}) => isActive ? "deactive" : "deactive"}><button>Login</button></NavLink>
-        <NavLink to='/signup' className={({isActive}) => isActive ? "deactive" : "deactive"}><button>Signup</button></NavLink>
-      </div>
-    </header>
-    <div className="gapError"></div>
-    </>
-  )
+    <AppBar position="static" sx={{ backgroundColor: "#042439", padding: "10px" }}>
+      <Container maxWidth="xl">
+        <Toolbar disableGutters sx={{ justifyContent: "space-between" }}>
+
+          {/* Logo + Title */}
+          <Box className="logo" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <img src="/src/Pages/Images/logo.svg" alt="logo" style={{ height: '40px' }} />
+            <Typography variant="h6" sx={{ color: '#4E84C1', fontWeight: 'bold', fontSize:'25px' }}>
+              SkillForge
+            </Typography>
+          </Box>
+
+          {/* Desktop Navigation */}
+          <Box className="link-nav" sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center', gap: 3 }}>
+            {pages.map((page, index) => (
+              <NavLink
+                key={index}
+                to={page.path}
+                className={({ isActive }) => (isActive ? 'active-link' : 'inactive-link')}
+                style={{ textDecoration: 'none', fontSize: '18px' }}
+              >
+                {page.name}
+              </NavLink>
+            ))}
+          </Box>
+
+          {/* Desktop Buttons */}
+          <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 2 }}>
+            <NavLink to="/login" style={{ textDecoration: 'none' }}>
+              <button className="auth-btn">Sign In</button>
+            </NavLink>
+            <NavLink to="/signup" style={{ textDecoration: 'none' }}>
+              <button className="auth-btn">Sign Up</button>
+            </NavLink>
+          </Box>
+
+          {/* Mobile Menu */}
+          <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+            <IconButton
+              size="large"
+              aria-label="menu"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleOpenNavMenu}
+              color="inherit"
+            >
+              <MenuIcon />
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorElNav}
+              anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+              keepMounted
+              transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+              open={Boolean(anchorElNav)}
+              onClose={handleCloseNavMenu}
+            >
+              {[...pages, { name: 'Sign In', path: '/login' }, { name: 'Sign Up', path: '/signup' }].map((item, index) => (
+                <MenuItem key={index} onClick={handleCloseNavMenu}>
+                  <NavLink
+                    to={item.path}
+                    className={({ isActive }) => (isActive ? 'active-link' : 'inactive-link')}
+                    style={{ textDecoration: 'none', color: 'black', fontSize: '16px' }}
+                  >
+                    {item.name}
+                  </NavLink>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
+
+        </Toolbar>
+      </Container>
+    </AppBar>
+  );
 }
 
-export default Header
+export default Header;
