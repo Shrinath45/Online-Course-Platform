@@ -1,32 +1,40 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import pool from "./config/db.js";
+import cookieParser from "cookie-parser";
 import authRoutes from "./routes/authRoutes.js";
 
 dotenv.config();
 
 const app = express();
+const PORT = process.env.PORT || 5000;
 
-// ✅ Apply middleware in correct order
-app.use(express.json()); // Parses JSON bodies
-app.use(express.urlencoded({ extended: true })); // Parses URL-encoded form data
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+// ✅ CORS (allow your Vite dev origin)
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
 
-// ✅ Debug middleware to log incoming requests
-app.use((req, res, next) => {
-console.log("📦 Incoming request body:", req.body);
-next();
-});
+// ✅ Body parsers
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
-// ✅ Base route
+// ✅ Health route
 app.get("/", (req, res) => {
-res.send("Server is running...");
+  res.send("🚀 Server is running...");
 });
 
-// ✅ Routes
+// ✅ API routes
 app.use("/api/auth", authRoutes);
 
-// ✅ Start server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log("🚀 Server running on port ${PORT}"));
+// ✅ Global error handler (helps debug)
+app.use((err, req, res, next) => {
+  console.error("🔥 Server Error:", err);
+  res.status(500).json({ message: "Internal Server Error", error: err.message });
+});
+
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

@@ -12,15 +12,19 @@ import {
   InputAdornment,
   Box,
   Alert,
+  CircularProgress,
 } from "@mui/material";
 import { Visibility, VisibilityOff, Email, Lock } from "@mui/icons-material";
 import { styled } from "@mui/system";
+import axios from "axios";
 
+// ✅ Validation Schema
 const schema = yup.object().shape({
   email: yup.string().email("Invalid email").required("Email is required"),
   password: yup.string().required("Password is required"),
 });
 
+// ✅ Styled Components
 const Container = styled(Box)({
   display: "flex",
   justifyContent: "center",
@@ -44,6 +48,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -57,22 +62,42 @@ const Login = () => {
     setShowPassword((prev) => !prev);
   };
 
-  const onSubmit = (user) => {
+  // ✅ Handle Login API
+  const onSubmit = async (user) => {
     setErrorMessage("");
+    setLoading(true);
 
-    const users = JSON.parse(localStorage.getItem("users")) || [];
-    const existingUser = users.find((u) => u.email === user.email);
+    try {
+      // Optional: log what we’re sending
+      console.log("▶️ Sending login payload:", user);
 
-    if (existingUser && existingUser.password === user.password) {
-      localStorage.setItem("loggedInUser", JSON.stringify(existingUser));
-      alert("Login successful");
+      const res = await axios.post(
+        "http://localhost:5000/api/auth/login",
+        user,
+        {
+          headers: { "Content-Type": "application/json" },
+          // withCredentials: true, // only needed if you set cookies from server
+        }
+      );
 
-      // Redirect based on role
-      if (existingUser.role === "Learner") navigate("/learner-dashboard");
-      else if (existingUser.role === "Instructor") navigate("/instructor-dashboard");
-      else if (existingUser.role === "Admin") navigate("/admin-dashboard");
-    } else {
-      setErrorMessage("Invalid email or password");
+      if (res.data?.success && res.data?.token) {
+        const { token, user: loggedInUser } = res.data;
+
+        localStorage.setItem("token", token);
+        localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
+
+        if (loggedInUser.role === "learner") navigate("/learner-dashboard");
+        else if (loggedInUser.role === "instructor") navigate("/instructor-dashboard");
+        else if (loggedInUser.role === "admin") navigate("/admin-dashboard");
+        else navigate("/");
+      } else {
+        setErrorMessage(res.data?.message || "Invalid email or password");
+      }
+    } catch (error) {
+      console.error("Login request error:", error?.response || error);
+      setErrorMessage(error?.response?.data?.message || "Server error. Try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -86,9 +111,14 @@ const Login = () => {
           Please login to continue
         </Typography>
 
-        {errorMessage && <Alert severity="error" sx={{ mb: 2 }}>{errorMessage}</Alert>}
+        {errorMessage && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {errorMessage}
+          </Alert>
+        )}
 
         <form onSubmit={handleSubmit(onSubmit)}>
+          {/* Email */}
           <TextField
             fullWidth
             label="Email"
@@ -106,6 +136,7 @@ const Login = () => {
             }}
           />
 
+          {/* Password */}
           <TextField
             fullWidth
             label="Password"
@@ -131,7 +162,7 @@ const Login = () => {
             }}
           />
 
-          {/* Forgot Password link */}
+          {/* Forgot Password */}
           <Typography
             variant="body2"
             align="right"
@@ -141,10 +172,12 @@ const Login = () => {
             Forgot Password?
           </Typography>
 
+          {/* Submit */}
           <Button
             type="submit"
             fullWidth
             variant="contained"
+            disabled={loading}
             sx={{
               mt: 2,
               py: 1.5,
@@ -153,12 +186,13 @@ const Login = () => {
               "&:hover": { background: "#1e3c72" },
             }}
           >
-            LOGIN
+            {loading ? <CircularProgress size={24} sx={{ color: "#fff" }} /> : "LOGIN"}
           </Button>
         </form>
 
+        {/* Signup Link */}
         <Typography variant="body2" mt={2}>
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <span
             style={{ color: "#1e3c72", cursor: "pointer", fontWeight: "bold" }}
             onClick={() => navigate("/signup")}

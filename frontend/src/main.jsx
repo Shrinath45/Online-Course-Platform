@@ -17,6 +17,10 @@ import About from "./Pages/Home/About/About.jsx"
 import Signup from "./Pages/login/signup.jsx";
 import Login from "./Pages/login/signin.jsx";
 import ForgotPassword from "./Pages/login/forgot.jsx";
+import AdminDashboard from "./admin/dashboard.jsx";
+import InstructorDashboard from "./instructor/dashboard.jsx";
+import LearnerDashboard from "./learner/dashboard.jsx";
+import ResetPassword from "./Pages/login/reset.jsx";
 
 // Define router
 const router = createBrowserRouter(
@@ -30,6 +34,10 @@ const router = createBrowserRouter(
       <Route path="/signup" element={<Signup />} />
       <Route path="/login" element={<Login />} />
       <Route path="/forgot" element={<ForgotPassword />} />
+      <Route path="/reset/:token" element={<ResetPassword />} />
+      <Route path="/admin-dashboard" element={<AdminDashboard />} />
+      <Route path="/instructor-dashboard" element={<InstructorDashboard />} />
+      <Route path="/learner-dashboard" element={<LearnerDashboard />} />
 
       {/* Catch-all route */}
       <Route path="*" element={<ErrorPage />} />
