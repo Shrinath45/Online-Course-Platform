@@ -21,6 +21,13 @@ import AdminDashboard from "./admin/dashboard.jsx";
 import InstructorDashboard from "./instructor/dashboard.jsx";
 import LearnerDashboard from "./learner/dashboard.jsx";
 import ResetPassword from "./Pages/login/reset.jsx";
+import LearnerCourses from "./learner/courses.jsx";
+import MyLearning from "./learner/mylearning.jsx";
+import ProtectedRoute from "./ProtecteedRoutes.jsx";
+
+import Profile from "./learner/lprofile.jsx";
+import ChangePassword from "./learner/lchangePassword.jsx";
+import EditProfile from "./learner/leditProfile.jsx";
 
 // Define router
 const router = createBrowserRouter(
@@ -35,11 +42,16 @@ const router = createBrowserRouter(
       <Route path="/login" element={<Login />} />
       <Route path="/forgot" element={<ForgotPassword />} />
       <Route path="/reset/:token" element={<ResetPassword />} />
-      <Route path="/admin-dashboard" element={<AdminDashboard />} />
-      <Route path="/instructor-dashboard" element={<InstructorDashboard />} />
-      <Route path="/learner-dashboard" element={<LearnerDashboard />} />
+      <Route path="/admin-dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+      <Route path="/instructor-dashboard" element={<ProtectedRoute><InstructorDashboard /></ProtectedRoute>} />
+      <Route path="/learner-dashboard" element={<ProtectedRoute><LearnerDashboard /></ProtectedRoute>} />
+      <Route path="/lcourses" element={<ProtectedRoute><LearnerCourses /></ProtectedRoute>} />
+      <Route path="/my-learning" element={<ProtectedRoute><MyLearning /></ProtectedRoute>} />
+      <Route path="/lprofile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+      <Route path="/change-Password" element={<ProtectedRoute><ChangePassword /></ProtectedRoute>} />
+      <Route path="/ledit-Profile" element={<ProtectedRoute><EditProfile /></ProtectedRoute>} />
 
-      {/* Catch-all route */}
+      {/* Catch-all route */}''
       <Route path="*" element={<ErrorPage />} />
     </Route>
   )

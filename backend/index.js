@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import authRoutes from "./routes/authRoutes.js";
+import learnerRoutes from "./Routes/learnerRoutes.js";
 
 dotenv.config();
 
@@ -30,6 +31,7 @@ app.get("/", (req, res) => {
 
 // ✅ API routes
 app.use("/api/auth", authRoutes);
+app.use("/api/learner", learnerRoutes)
 
 // ✅ Global error handler (helps debug)
 app.use((err, req, res, next) => {
