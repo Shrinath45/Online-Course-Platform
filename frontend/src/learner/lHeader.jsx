@@ -91,7 +91,7 @@ function Header() {
               onClick={handleOpenUserMenu}
             >
               <Avatar
-                src={user?.profile_pic || '/default-avatar.png'}
+                src={user?.profile_photo || '/default-avatar.png'}
                 alt={user?.name || 'Profile'}
                 sx={{ width: 40, height: 40 }}
               />
@@ -146,9 +146,7 @@ function Header() {
         open={Boolean(anchorElUser)}
         onClose={handleCloseUserMenu}
       >
-        <MenuItem onClick={()=>{navigate("/lprofile")}}>Profile</MenuItem>
-        <MenuItem onClick={()=>{navigate("/ledit-profile")}}>Edit Profile</MenuItem>
-        <MenuItem onClick={()=>{navigate("/change-password")}}>Change Password</MenuItem>
+        <MenuItem onClick={()=>{navigate("/lprofile")}}>View Profile</MenuItem>
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </AppBar>
