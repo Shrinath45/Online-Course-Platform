@@ -268,8 +268,42 @@ export const updateProfilePic = async (req, res) => {
   }
 };
 
+// export const updateProfile = async (req, res) => {
+//   try {
+//     const authHeader = req.headers.authorization;
+//     if (!authHeader || !authHeader.startsWith("Bearer ")) {
+//       return res.status(401).json({ success: false, message: "Unauthorized" });
+//     }
+
+//     const token = authHeader.split(" ")[1];
+//     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+//     const user_id = decoded.user_id; // ✅ Extract from token
+
+//     const { name, email } = req.body;
+
+//     if (!name || !email) {
+//       return res.status(400).json({ success: false, message: "Name and Email are required" });
+//     }
+
+//     const [result] = await db.query(
+//       `UPDATE users SET name = ?, email = ? WHERE user_id = ?`,
+//       [name, email, user_id]
+//     );
+
+//     if (result.affectedRows === 0) {
+//       return res.status(404).json({ success: false, message: "User not found" });
+//     }
+
+//     return res.json({ success: true, message: "Profile Updated Successfully" });
+//   } catch (error) {
+//     console.error("Error updating Profile Info: ", error);
+//     res.status(500).json({ success: false, message: "Server Error" });
+//   }
+// };
+
 export const updateProfile = async (req, res) => {
   try {
+    // ✅ Check token
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return res.status(401).json({ success: false, message: "Unauthorized" });
@@ -277,24 +311,28 @@ export const updateProfile = async (req, res) => {
 
     const token = authHeader.split(" ")[1];
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user_id = decoded.user_id; // ✅ Extract from token
+    const user_id = decoded.user_id; // ✅ Extracted from token
 
-    const { name, email } = req.body;
+    // ✅ Extract data from request body
+    const { name, email, phone, city, bio } = req.body;
 
     if (!name || !email) {
       return res.status(400).json({ success: false, message: "Name and Email are required" });
     }
 
+    // ✅ Update profile in DB
     const [result] = await db.query(
-      `UPDATE users SET name = ?, email = ? WHERE user_id = ?`,
-      [name, email, user_id]
+      `UPDATE users 
+       SET name = ?, email = ?, phone = ?, city = ?, bio = ?
+       WHERE user_id = ?`,
+      [name, email, phone || null, city || null, bio || null, user_id]
     );
 
     if (result.affectedRows === 0) {
       return res.status(404).json({ success: false, message: "User not found" });
     }
 
-    return res.json({ success: true, message: "Profile Updated Successfully" });
+    return res.json({ success: true, message: "Profile updated successfully" });
   } catch (error) {
     console.error("Error updating Profile Info: ", error);
     res.status(500).json({ success: false, message: "Server Error" });

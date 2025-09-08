@@ -1,3 +1,4 @@
+import LHeader from "./lHeader";
 import Header from "./lHeader";
 
 
@@ -5,7 +6,7 @@ function MyLearning(){
 
     return(
         <>
-        <Header />
+        <LHeader />
         </>
     );
 }

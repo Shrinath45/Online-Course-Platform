@@ -19,7 +19,7 @@ const pages = [
   { name: 'My Learning', path: '/my-learning' }
 ];
 
-function LHeader() {
+function IHeader() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const navigate = useNavigate();
@@ -159,4 +159,4 @@ function LHeader() {
   );
 }
 
-export default LHeader;
+export default IHeader;
