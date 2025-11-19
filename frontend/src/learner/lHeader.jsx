@@ -15,7 +15,7 @@ import Avatar from '@mui/material/Avatar';
 
 const pages = [
   { name: 'Dashboard', path: '/learner-dashboard' },
-  { name: 'Courses', path: '/lcourses' },
+  { name: 'Courses', path: '/learner-courses' },
   { name: 'My Learning', path: '/my-learning' }
 ];
 

@@ -4,6 +4,9 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import authRoutes from "./routes/authRoutes.js";
 import learnerRoutes from "./Routes/learnerRoutes.js";
+import router from "./Routes/instructorRoutes.js";
+
+
 
 dotenv.config();
 
@@ -31,7 +34,8 @@ app.get("/", (req, res) => {
 
 // ✅ API routes
 app.use("/api/auth", authRoutes);
-app.use("/api/learner", learnerRoutes)
+app.use("/api/learner", learnerRoutes);
+app.use("/api/instructor", router);
 
 // ✅ Global error handler (helps debug)
 app.use((err, req, res, next) => {

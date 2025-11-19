@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import Header from "../../learner/lHeader";
+import { useNavigate } from "react-router-dom";
 import {
     Grid,
     Box,
@@ -22,8 +22,10 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import InfoIcon from "@mui/icons-material/Info";
 import axios from "axios";
 import toast from "react-hot-toast";
+import IHeader from "./iHeader";
 
-function Profile() {
+function IProfile() {
+    const navigate = useNavigate();
     const storedUser = JSON.parse(sessionStorage.getItem("loggedInUser"));
     const [user, setUser] = useState(storedUser);
 
@@ -157,7 +159,7 @@ function Profile() {
 
     return (
         <>
-            <Header />
+            <IHeader />
             <Box sx={{ p: 4 }}>
                 <Paper
                     elevation={4}
@@ -245,6 +247,58 @@ function Profile() {
                 </Paper>
             </Box>
 
+<Box sx={{ p: 4, pt: 0 }}>
+  <Paper
+    elevation={4}
+    sx={{
+      p: 4,
+      maxWidth: 1000,
+      mx: "auto",
+      borderRadius: 3,
+      background: "linear-gradient(135deg, #fdfdfd, #f4faff)",
+    }}
+  >
+    <Typography variant="h5" fontWeight="bold" color="#042439" sx={{ mb: 3 }}>
+      💰 Instructor Earnings
+    </Typography>
+
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        flexWrap: "wrap",
+      }}
+    >
+      {/* Earnings Info */}
+      <Box>
+        <Typography variant="body1" color="text.secondary">
+          Total Earnings
+        </Typography>
+        <Typography variant="h4" fontWeight="bold" color="#2e7d32">
+          ₹ {user?.total_earning || 0}
+        </Typography>
+      </Box>
+
+      {/* View Details Button */}
+      <Button
+        variant="contained"
+        sx={{
+          textTransform: "none",
+          backgroundColor: "#042439",
+          "&:hover": { backgroundColor: "#063456" },
+          mt: { xs: 5, sm: 2 },
+        }}
+        onClick={() => navigate("/instructor-earning")}
+      >
+        View Details
+      </Button>
+    </Box>
+  </Paper>
+</Box>
+
+
+
             {/* Edit Profile Dialog */}
             <Dialog open={openEditProfile} onClose={() => setOpenEditProfile(false)}>
                 <DialogTitle>Edit Profile</DialogTitle>
@@ -325,4 +379,4 @@ function Profile() {
 }
 
 
-export default Profile;
+export default IProfile;

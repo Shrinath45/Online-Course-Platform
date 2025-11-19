@@ -25,6 +25,9 @@ import LearnerCourses from "./learner/courses.jsx";
 import MyLearning from "./learner/mylearning.jsx";
 import ProtectedRoute from "./ProtecteedRoutes.jsx";
 import Profile from "./Pages/profile/profile.jsx";
+import ICourses from "./instructor/myCourses.jsx";
+import IProfile from "./instructor/iProfile.jsx";
+import IEarning from "./instructor/iEarning.jsx";
 
 
 // Define router
@@ -42,8 +45,11 @@ const router = createBrowserRouter(
       <Route path="/reset/:token" element={<ResetPassword />} />
       <Route path="/admin-dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
       <Route path="/instructor-dashboard" element={<ProtectedRoute><InstructorDashboard /></ProtectedRoute>} />
+      <Route path="/instructor-courses" element={<ProtectedRoute><ICourses /></ProtectedRoute>} />
+      <Route path="/instructor-profile" element={<ProtectedRoute><IProfile /></ProtectedRoute>} />
       <Route path="/learner-dashboard" element={<ProtectedRoute><LearnerDashboard /></ProtectedRoute>} />
-      <Route path="/lcourses" element={<ProtectedRoute><LearnerCourses /></ProtectedRoute>} />
+      <Route path="/learner-courses" element={<ProtectedRoute><LearnerCourses /></ProtectedRoute>} />
+      <Route path="/instructor-earning" element={<ProtectedRoute><IEarning /></ProtectedRoute>} />
       <Route path="/my-learning" element={<ProtectedRoute><MyLearning /></ProtectedRoute>} />
       <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
 
