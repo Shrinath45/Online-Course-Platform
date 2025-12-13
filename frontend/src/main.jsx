@@ -28,6 +28,7 @@ import Profile from "./Pages/profile/profile.jsx";
 import ICourses from "./instructor/myCourses.jsx";
 import IProfile from "./instructor/iProfile.jsx";
 import IEarning from "./instructor/iEarning.jsx";
+import AddCourse from "./instructor/AddCourse.jsx";
 
 
 // Define router
@@ -52,6 +53,8 @@ const router = createBrowserRouter(
       <Route path="/instructor-earning" element={<ProtectedRoute><IEarning /></ProtectedRoute>} />
       <Route path="/my-learning" element={<ProtectedRoute><MyLearning /></ProtectedRoute>} />
       <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+      <Route path="/add-course" element={<ProtectedRoute><AddCourse /></ProtectedRoute>} />
+
 
       {/* Catch-all route */}''
       <Route path="*" element={<ErrorPage />} />

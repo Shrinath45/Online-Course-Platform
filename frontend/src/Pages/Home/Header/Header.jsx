@@ -38,7 +38,7 @@ function Header() {
           <Box className="logo" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <img src="/src/Pages/Images/logo.svg" alt="logo" style={{ height: '40px' }} />
             <Typography variant="h6" sx={{ color: '#4E84C1', fontWeight: 'bold', fontSize:'25px' }}>
-              SkillForge
+            <span className='text-white'>Skill</span>Forge
             </Typography>
           </Box>
 

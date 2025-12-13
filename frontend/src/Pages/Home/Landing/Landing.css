@@ -1,11 +1,12 @@
-/* Global Reset */
 button:hover{
     cursor: pointer;
 }
 
 .underLine{
     width: 10rem;
-    margin-left: 45%;
+    justify-content: center;
+    align-items: center;
+    display: none;
 }
 
 /* === top section === */
@@ -28,7 +29,8 @@ button:hover{
     text-align: left;
 }
 .top .right{
-    padding: 25px;
+    padding-left: 200px;
+    padding-bottom: 200px;
 }
 
 .search {
@@ -86,7 +88,7 @@ button:hover{
 /* === About === */
 
 .about{
-    height: 90vh;
+    min-height: 90vh;
 }
 .about h1{
     color: #fff;
@@ -95,26 +97,13 @@ button:hover{
     font-size: 1.9rem;
     font-weight: bold;
 }
-
-.about p{
-    color: #fff;
-    padding: 30px;
-    line-height: 2rem;
+.about h2{
+  margin-top: 30px;
+  margin-bottom: 30px;
 }
-
-.content{
-    padding: 0 5rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-around; /* Apply for all */
-    gap: 5rem;
-}
-
-/* === Subjects sectuon === */
-
 .courses{
    padding-top: 8vh;
-   height: 80vh;
+   min-height: 90vh;
 }
 .courses h1{
     color: white;
@@ -122,41 +111,20 @@ button:hover{
     font-weight: bold;
     text-align: center;
 }
-.subjects{
-    display: flex;
-    gap: 2.5rem;
-    margin: 4rem;
-    align-items: center;
-    justify-content: center;
-}
 
-.subject{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.8rem;
-    background-color: #042439;
-    width: 150px;
-    height: 130px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.subject p{
-    color: #fff;
-    font-size: medium;
-}
-
-.subject img{
-    width: 70px;
-}
 
 /* === Contact Us === */
 
-.contact-us{
+.contact{
     padding-bottom: 0vh;
-    height: 80vh;
+    min-height: 90vh;
+}
+.contact .content{
+    padding: 0 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-around; /* Apply for all */
+    gap: 5rem;
 }
 
 .contact h1{
@@ -262,12 +230,29 @@ button:hover{
   .top .left h1 {
     font-size: 1.8rem;
   }
+  .content{
+    display: flex;
+    flex-direction: column;
+  }
+  .footer{
+    display: flex;
+    justify-content: space-between;
+  }
+  .icons{
+    margin-left: 10rem;
+  }
 }
 
 @media (max-width: 768px) {
   .top {
     flex-direction: column;
     text-align: center;
+  }
+  .top .left{
+    width: 100vw;
+  }
+  .top .right{
+    display: none;
   }
 
   .search {
@@ -283,16 +268,53 @@ button:hover{
   .about img {
     margin: 0 auto;
   }
+  .content{
+    display: flex;
+    flex-direction: column;
+  }
+  .content img{
+    display: none;
+  }
+  .content form{
+    width: 100vw;
+    padding: 20px;
+  }
+  .underLine{
+    display: none;
+  }
 
   .contact .content {
     flex-direction: column;
     align-items: center;
   }
+   .footer{
+    display: flex;
+    justify-content: space-between;
+  }
+  .icons{
+    margin-left: 2rem;
+  }
 }
 
 @media (max-width: 480px) {
+  .top{
+    height: 80vh;
+    margin-top: 0;
+    padding-top:10vh;
+  }
+  .underLine{
+    display: none;
+  }
+  .top .left{
+    margin-top: 0;
+    padding-top: 0;
+  }
   .top .left h1 {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
+
+  }
+  .top .right{
+    display: none;
   }
 
   .search input {
@@ -301,5 +323,22 @@ button:hover{
 
   .search button {
     font-size: 14px;
+  }
+  .contact{
+    padding-bottom: 20px;
+  }
+  .content img{
+    display: none;
+  }
+  .content form{
+    padding-top: 40px;
+  }
+  .content form h4{
+    font-size: 1.4rem;
+  }
+  .footer{
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
   }
 }

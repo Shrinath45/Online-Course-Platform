@@ -52,7 +52,7 @@ function IHeader() {
               variant="h6"
               sx={{ color: "#4E84C1", fontWeight: "bold", fontSize: "25px" }}
             >
-              SkillForge
+              <span className="text-white">Skill</span>Forge
             </Typography>
           </Box>
 
