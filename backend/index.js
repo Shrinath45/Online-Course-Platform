@@ -4,7 +4,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import authRoutes from "./routes/authRoutes.js";
 import learnerRoutes from "./Routes/learnerRoutes.js";
-import router from "./Routes/instructorRoutes.js";
+import instructorRoutes from "./Routes/instructorRoutes.js";
 
 
 
@@ -35,7 +35,7 @@ app.get("/", (req, res) => {
 // ✅ API routes
 app.use("/api/auth", authRoutes);
 app.use("/api/learner", learnerRoutes);
-app.use("/api/instructor", router);
+app.use("/api/instructor", instructorRoutes);
 
 // ✅ Global error handler (helps debug)
 app.use((err, req, res, next) => {
