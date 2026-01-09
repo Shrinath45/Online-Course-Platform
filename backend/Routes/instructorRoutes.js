@@ -1,32 +1,22 @@
 import express from "express";
 import { verifyToken } from "../middleware/authMiddleware.js";
 import { upload } from "../middleware/multer.js";
+
 import {
   addCourse,
   totalCourses,
   totalEarnings,
   totalStudents,
-} from "../Controllers/instructorController.js";
+} from "../controllers/instructorController.js";
 
 const instructorRoutes = express.Router();
 
-instructorRoutes.get(
-  "/totalCourses",
-  verifyToken,
-  totalCourses
-);
-instructorRoutes.get(
-  "/totalStudents",
-  verifyToken,
-  totalStudents
-);
-instructorRoutes.get(
-  "/totalEarnings",
-  verifyToken,
-  totalEarnings
-);
+/* -------- DASHBOARD STATS -------- */
+instructorRoutes.get("/total-courses", verifyToken, totalCourses);
+instructorRoutes.get("/total-students", verifyToken, totalStudents);
+instructorRoutes.get("/total-earnings", verifyToken, totalEarnings);
 
-/* ---------------- ADD COURSE ---------------- */
+/* -------- ADD COURSE -------- */
 instructorRoutes.post(
   "/add-course",
   verifyToken,
@@ -36,6 +26,5 @@ instructorRoutes.post(
   ]),
   addCourse
 );
-
 
 export default instructorRoutes;
