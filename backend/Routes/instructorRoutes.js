@@ -4,6 +4,7 @@ import { upload } from "../middleware/multer.js";
 
 import {
   addCourse,
+  getInstructorCourses,
   totalCourses,
   totalEarnings,
   totalStudents,
@@ -26,5 +27,7 @@ instructorRoutes.post(
   ]),
   addCourse
 );
+
+instructorRoutes.get("/get-courses", verifyToken, getInstructorCourses);
 
 export default instructorRoutes;

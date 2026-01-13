@@ -49,10 +49,10 @@ export const totalStudents = async (req, res) => {
     const instructorId = req.user.user_id;
 
     const [[{ totalStudents }]] = await db.query(
-      `SELECT COUNT(DISTINCT e.learner_id) AS totalStudents
-       FROM enrollments e
-       JOIN courses c ON e.course_id = c.course_id
-       WHERE c.instructor_id = ?`,
+      `SELECT COUNT(DISTINCT e.user_id) AS totalStudents
+        FROM enrollments e
+        JOIN courses c ON e.course_id = c.course_id
+    WHERE c.instructor_id = ?`,
       [instructorId]
     );
 
@@ -229,6 +229,47 @@ export const addCourse = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Server error",
+    });
+  }
+};
+
+/* ================= GET INSTRUCTOR COURSES ================= */
+export const getInstructorCourses = async (req, res) => {
+  try {
+    if (!req.user?.user_id) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized User",
+      });
+    }
+
+    const instructorId = req.user.user_id;
+
+    const [courses] = await db.query(
+      `SELECT 
+        course_id,
+        title,
+        thumbnail_url,
+        language,
+        course_type,
+        price,
+        video_duration_hours,
+        created_at
+      FROM courses
+      WHERE instructor_id = ?
+      ORDER BY created_at DESC`,
+      [instructorId]
+    );
+
+    return res.status(200).json({
+      success: true,
+      courses,
+    });
+  } catch (error) {
+    console.error("Get instructor courses error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Unable to fetch courses",
     });
   }
 };
