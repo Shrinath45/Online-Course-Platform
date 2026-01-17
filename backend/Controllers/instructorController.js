@@ -172,13 +172,21 @@ export const addCourse = async (req, res) => {
 
     /* Upload Video */
     const videoUploadResult = await new Promise((resolve, reject) => {
-      const stream = cloudinary.uploader.upload_stream(
-        { resource_type: "video", folder: "courses/videos" },
-        (error, result) => (error ? reject(error) : resolve(result))
-      );
+  const stream = cloudinary.uploader.upload_stream(
+    {
+      resource_type: "video",
+      folder: "courses/videos",
+      format: "mp4",               // 🔥 FORCE MP4
+      eager: [
+        { format: "mp4", quality: "auto" }
+      ]
+    },
+    (error, result) => (error ? reject(error) : resolve(result))
+  );
 
-      streamifier.createReadStream(videoFile.buffer).pipe(stream);
-    });
+  streamifier.createReadStream(videoFile.buffer).pipe(stream);
+});
+
 
     const videoDurationSeconds = await getVideoDurationWithRetry(
       videoUploadResult.public_id
