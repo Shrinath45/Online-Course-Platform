@@ -1,11 +1,43 @@
 import React, { useState } from 'react'
 import CourseDialog from './CourseDialog';
+import axios from 'axios';
 
 const CardContent = ({ course }) => {
 
+    const user = JSON.parse(sessionStorage.getItem("loggedInUser"));
+    const token = user?.token;
 
     const [open, setOpen] = useState(false);
 
+    const deleteClick = async () => {
+        const confirmDelete = window.confirm(
+            "Are you sure you want to delete this course?"
+        );
+
+        if (!confirmDelete) return;
+
+        try {
+            await axios.delete(
+                `http://localhost:5000/api/instructor/delete-course/${course.course_id}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+
+
+            alert("Course deleted successfully");
+
+            // 🔥 IMPORTANT: Remove card from UI
+            window.location.reload(); // TEMP solution
+
+        } catch (error) {
+            console.error(error);
+            alert("Failed to delete course");
+        }
+    };
 
 
 
@@ -56,6 +88,9 @@ const CardContent = ({ course }) => {
                         setOpen(true);
                     }} className="w-full mt-4 bg-emerald-500 hover:bg-emerald-600 text-black font-medium py-2 rounded-lg">
                         View Details
+                    </button>
+                    <button onClick={deleteClick} className="w-full mt-4 bg-red-900 hover:bg-red-800 text-black font-medium py-2 rounded-lg">
+                        Delete Course
                     </button>
                 </div>
 

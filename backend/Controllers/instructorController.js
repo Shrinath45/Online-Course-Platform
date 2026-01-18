@@ -258,6 +258,7 @@ export const getInstructorCourses = async (req, res) => {
         course_id,
         title,
         thumbnail_url,
+        video_url,
         language,
         course_type,
         price,
@@ -281,3 +282,43 @@ export const getInstructorCourses = async (req, res) => {
     });
   }
 };
+
+// controller/course.controller.js
+export const deleteCourse = async (req, res) => {
+  try {
+    if (!req.user?.user_id) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized user",
+      });
+    }
+
+    const instructorId = req.user.user_id;
+    const { id } = req.params;
+
+    const [result] = await db.query(
+      `DELETE FROM courses 
+       WHERE course_id = ? AND instructor_id = ?`,
+      [id, instructorId]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Course not found or not authorized",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Course deleted successfully",
+    });
+  } catch (error) {
+    console.error("Delete course error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+

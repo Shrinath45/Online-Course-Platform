@@ -8,6 +8,7 @@ import {
   totalCourses,
   totalEarnings,
   totalStudents,
+  deleteCourse,
 } from "../controllers/instructorController.js";
 
 const instructorRoutes = express.Router();
@@ -29,5 +30,7 @@ instructorRoutes.post(
 );
 
 instructorRoutes.get("/get-courses", verifyToken, getInstructorCourses);
+instructorRoutes.delete("/delete-course/:course_id", verifyToken ,deleteCourse);
+
 
 export default instructorRoutes;
