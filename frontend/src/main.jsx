@@ -17,7 +17,6 @@ import About from "./Pages/Home/About/About.jsx"
 import Signup from "./Pages/login/signup.jsx";
 import Login from "./Pages/login/signin.jsx";
 import ForgotPassword from "./Pages/login/forgot.jsx";
-import AdminDashboard from "./admin/dashboard.jsx";
 import InstructorDashboard from "./instructor/dashboard/dashboard.jsx";
 import LearnerDashboard from "./learner/dashboard.jsx";
 import ResetPassword from "./Pages/login/reset.jsx";
@@ -29,6 +28,11 @@ import ICourses from "./instructor/Courses/myCourses.jsx";
 import IProfile from "./instructor/profile/iProfile.jsx";
 import IEarning from "./instructor/profile/iEarning.jsx";
 import AddCourse from "./instructor/Courses/AddCourse.jsx";
+import Adashboard from "./admin/dashboard/Adashboard.jsx";
+import Aheader from "./admin/Header/Aheader.jsx";
+import Aprofile from "./admin/profile/Aprofile.jsx";
+import Users from "./admin/Users/Users.jsx";
+import Acourses from "./admin/Courses/Acourses.jsx";
 
 
 // Define router
@@ -44,7 +48,11 @@ const router = createBrowserRouter(
       <Route path="/login" element={<Login />} />
       <Route path="/forgot" element={<ForgotPassword />} />
       <Route path="/reset/:token" element={<ResetPassword />} />
-      <Route path="/admin-dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+      <Route path="/admin-dashboard" element={<ProtectedRoute><Adashboard /></ProtectedRoute>} />
+      <Route path="/admin-header" element={<ProtectedRoute><Aheader /></ProtectedRoute>} />
+      <Route path="/admin-profile" element={<ProtectedRoute><Aprofile /></ProtectedRoute>} />
+      <Route path="/admin-users" element={<ProtectedRoute><Users /></ProtectedRoute>} />
+      <Route path="/admin-courses" element={<ProtectedRoute><Acourses /></ProtectedRoute>} />
       <Route path="/instructor-dashboard" element={<ProtectedRoute><InstructorDashboard /></ProtectedRoute>} />
       <Route path="/instructor-courses" element={<ProtectedRoute><ICourses /></ProtectedRoute>} />
       <Route path="/instructor-profile" element={<ProtectedRoute><IProfile /></ProtectedRoute>} />
@@ -54,7 +62,6 @@ const router = createBrowserRouter(
       <Route path="/my-learning" element={<ProtectedRoute><MyLearning /></ProtectedRoute>} />
       <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
       <Route path="/add-course" element={<ProtectedRoute><AddCourse /></ProtectedRoute>} />
-
 
       {/* Catch-all route */}''
       <Route path="*" element={<ErrorPage />} />

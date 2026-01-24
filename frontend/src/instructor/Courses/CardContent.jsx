@@ -1,43 +1,43 @@
 import React, { useState } from 'react'
 import CourseDialog from './CourseDialog';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
-const CardContent = ({ course }) => {
+const CardContent = ({ course, onDelete }) => {
 
-    const user = JSON.parse(sessionStorage.getItem("loggedInUser"));
-    const token = user?.token;
+   const token = sessionStorage.getItem("token");
+
 
     const [open, setOpen] = useState(false);
 
     const deleteClick = async () => {
-        const confirmDelete = window.confirm(
-            "Are you sure you want to delete this course?"
-        );
+  const confirmDelete = window.confirm(
+    "Are you sure you want to delete this course?"
+  );
 
-        if (!confirmDelete) return;
+  if (!confirmDelete) return;
 
-        try {
-            await axios.delete(
-                `http://localhost:5000/api/instructor/delete-course/${course.course_id}`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
+  try {
+    const res = await axios.delete(
+      `http://localhost:5000/api/instructor/delete-course/${course.course_id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
+    if (res.data.success) {
+      toast.success("Course Deleted Successfully");
+      // 🔥 Let parent remove course from state
+      onDelete(course.course_id);
+    }
+  } catch (error) {
+    console.error(error);
+    toast.error("Failed to delete course!");
+  }
+};
 
-
-            alert("Course deleted successfully");
-
-            // 🔥 IMPORTANT: Remove card from UI
-            window.location.reload(); // TEMP solution
-
-        } catch (error) {
-            console.error(error);
-            alert("Failed to delete course");
-        }
-    };
 
 
 

@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import authRoutes from "./routes/authRoutes.js";
 import learnerRoutes from "./routes/learnerRoutes.js";
 import instructorRoutes from "./routes/instructorRoutes.js";
+import adminRoutes from "./routes/adminRoutes.js";
 
 dotenv.config();
 
@@ -40,6 +41,7 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/learner", learnerRoutes);
 app.use("/api/instructor", instructorRoutes);
+app.use("/api/admin", adminRoutes);
 
 // ✅ Global error handler
 app.use((err, req, res, next) => {

@@ -4,7 +4,7 @@ import CardContent from "./CardContent";
 import { useNavigate } from "react-router-dom";
 
 const Cards = () => {
-  const [courses, setCourses] = useState([]); // MUST be array
+  const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -22,11 +22,10 @@ const Cards = () => {
           }
         );
 
-        // ✅ FIX IS HERE
-        setCourses(res.data.courses);
+        setCourses(res.data.courses || []);
       } catch (error) {
         console.error("Fetch courses error:", error);
-        setCourses([]); // safety
+        setCourses([]);
       } finally {
         setLoading(false);
       }
@@ -35,28 +34,41 @@ const Cards = () => {
     fetchCourses();
   }, []);
 
-  if (loading) return <p>Loading courses...</p>;
+  // 🔥 DELETE HANDLER (IMPORTANT)
+  const handleDeleteCourse = (courseId) => {
+    setCourses((prevCourses) =>
+      prevCourses.filter(course => course.course_id !== courseId)
+    );
+  };
+
+  if (loading) return <p className="p-5">Loading courses...</p>;
 
   return (
-    <div>
-      <div className="flex flex-wrap justify-between p-5">
-        <button className="w-fit text-lg bg-blue-600 text-white px-3 py-2">Filter</button>
-        <button className="w-fit text-lg bg-blue-600 text-white px-3 py-2" onClick={()=>{
-          navigate('/add-course');
-        }}>Add Course</button>
-      </div>
-      <div className="cards-grid flex justify-between gap-5 p-10 flex-wrap">
+    <div className="flex flex-col">
 
-        {Array.isArray(courses) && courses.length > 0 ? (
+
+      <div className="flex justify-end p-5">
+        <button
+          className="text-lg bg-blue-600 text-white px-4 py-2 w-fit rounded hover:bg-blue-700"
+          onClick={() => navigate("/add-course")}
+        >
+          Add Course
+        </button>
+      </div>
+
+      {/* Course Cards */}
+      <div className="cards-grid flex gap-10 p-10 flex-wrap">
+        {courses.length > 0 ? (
           courses.map(course => (
-            <CardContent key={course.course_id} course={course} />
+            <CardContent
+              key={course.course_id}
+              course={course}
+              onDelete={handleDeleteCourse} // 🔥 PASS HANDLER
+            />
           ))
         ) : (
           <p>No courses found</p>
         )}
-
-
-
       </div>
     </div>
   );

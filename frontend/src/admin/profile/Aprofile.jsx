@@ -22,9 +22,9 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import InfoIcon from "@mui/icons-material/Info";
 import axios from "axios";
 import toast from "react-hot-toast";
-import IHeader from "../Header/iHeader";
+import Aheader from "../Header/Aheader";
 
-function IProfile() {
+function Aprofile() {
     const navigate = useNavigate();
     const storedUser = JSON.parse(sessionStorage.getItem("loggedInUser"));
     const [user, setUser] = useState(storedUser);
@@ -159,7 +159,7 @@ function IProfile() {
 
     return (
         <>
-            <IHeader />
+            <Aheader />
             <Box sx={{ p: 4 }}>
                 <Paper
                     elevation={4}
@@ -380,4 +380,4 @@ function IProfile() {
 }
 
 
-export default IProfile;
+export default Aprofile;

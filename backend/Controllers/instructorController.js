@@ -294,12 +294,12 @@ export const deleteCourse = async (req, res) => {
     }
 
     const instructorId = req.user.user_id;
-    const { id } = req.params;
+    const { course_id } = req.params; // 🔥 FIX HERE
 
     const [result] = await db.query(
       `DELETE FROM courses 
        WHERE course_id = ? AND instructor_id = ?`,
-      [id, instructorId]
+      [course_id, instructorId]
     );
 
     if (result.affectedRows === 0) {
@@ -309,16 +309,15 @@ export const deleteCourse = async (req, res) => {
       });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: "Course deleted successfully",
     });
   } catch (error) {
     console.error("Delete course error:", error);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "Server error",
     });
   }
 };
-

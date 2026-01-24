@@ -3,14 +3,19 @@ import { X } from "lucide-react";
 import axios from "../../api/axiosInstance";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import IHeader from "../Header/iHeader";
 
 
 
-const AddCourse = ({ onClose }) => {
+const AddCourse = () => {
 
 
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  const onClose = () => {
+    navigate('/instructor-courses');
+  }
 
 
   const [form, setForm] = useState({
@@ -78,6 +83,8 @@ const AddCourse = ({ onClose }) => {
 
 
   return (
+    <>
+    <IHeader />
     <div className="min-h-screen bg-gradient-to-br  flex items-center justify-center px-4 py-10">
       <form
         onSubmit={handleSubmit}
@@ -86,7 +93,7 @@ const AddCourse = ({ onClose }) => {
         <button
           type="button"
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-500 hover:text-black"
+          className="absolute top-25 right-4 w-fit px-6 py-2 text-gray-500 hover:text-black"
         >
           <X size={24} />
         </button>
@@ -213,6 +220,7 @@ const AddCourse = ({ onClose }) => {
 
       </form>
     </div>
+    </>
   );
 };
 

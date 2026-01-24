@@ -18,7 +18,7 @@ const CourseDialog = ({ open, onClose, course }) => {
   };
 
   return (
-    <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
+    <Dialog open={open}  onClose={handleClose} fullWidth maxWidth="md" className="p-20 h-screen">
 
       <DialogTitle>
         {editMode ? "Edit Course" : "Course Details"}
@@ -39,11 +39,12 @@ const CourseDialog = ({ open, onClose, course }) => {
           <Button
             variant="contained"
             onClick={() => setEditMode(true)}
+            className="w-fit "
           >
             Edit Course
           </Button>
         )}
-        <Button onClick={handleClose}>Close</Button>
+        <Button onClick={handleClose} className="text-lg hover:text-white">Close</Button>
       </DialogActions>
 
     </Dialog>
