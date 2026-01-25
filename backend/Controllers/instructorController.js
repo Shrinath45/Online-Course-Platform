@@ -69,6 +69,40 @@ export const totalStudents = async (req, res) => {
   }
 };
 
+/* ================= PENDING COURSES ================= */
+export const pendingCoursesCount = async (req, res) => {
+  try {
+    if (!req.user?.user_id) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized User",
+      });
+    }
+
+    const instructorId = req.user.user_id;
+
+    const [[{ pendingCourses }]] = await db.query(
+      `SELECT COUNT(*) AS pendingCourses
+       FROM courses
+       WHERE instructor_id = ?
+       AND approval_status = 'PENDING'`,
+      [instructorId]
+    );
+
+    return res.status(200).json({
+      success: true,
+      pendingCourses,
+    });
+  } catch (error) {
+    console.error("Pending courses count error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Unable to get pending courses",
+    });
+  }
+};
+
+
 /* ================= TOTAL EARNINGS ================= */
 export const totalEarnings = async (req, res) => {
   try {
@@ -262,6 +296,7 @@ export const getInstructorCourses = async (req, res) => {
         language,
         course_type,
         price,
+        approval_status,
         video_duration_hours,
         created_at
       FROM courses

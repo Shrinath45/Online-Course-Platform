@@ -59,10 +59,10 @@ function Header() {
           {/* Desktop Buttons */}
           <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 2 }}>
             <NavLink to="/login" style={{ textDecoration: 'none' }}>
-              <button className="auth-btn">Sign In</button>
+              <button className="btn">Sign In</button>
             </NavLink>
             <NavLink to="/signup" style={{ textDecoration: 'none' }}>
-              <button className="auth-btn">Sign Up</button>
+              <button className="btn">Sign Up</button>
             </NavLink>
           </Box>
 

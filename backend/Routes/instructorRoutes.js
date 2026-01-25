@@ -9,6 +9,7 @@ import {
   totalEarnings,
   totalStudents,
   deleteCourse,
+  pendingCoursesCount,
 } from "../controllers/instructorController.js";
 
 const instructorRoutes = express.Router();
@@ -17,6 +18,7 @@ const instructorRoutes = express.Router();
 instructorRoutes.get("/total-courses", verifyToken, totalCourses);
 instructorRoutes.get("/total-students", verifyToken, totalStudents);
 instructorRoutes.get("/total-earnings", verifyToken, totalEarnings);
+instructorRoutes.get("/total-pending", verifyToken, pendingCoursesCount);
 
 /* -------- ADD COURSE -------- */
 instructorRoutes.post(

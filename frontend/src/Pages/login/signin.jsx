@@ -65,7 +65,53 @@ const Login = () => {
   };
 
   // ✅ Handle Login API
-  const onSubmit = async (user) => {
+//   const onSubmit = async (user) => {
+//   setErrorMessage("");
+//   setLoading(true);
+
+//   try {
+//     const res = await axios.post(
+//       "http://localhost:5000/api/auth/login",
+//       user,
+//       {
+//         headers: { "Content-Type": "application/json" },
+//       }
+//     );
+
+//     if (res.data?.success && res.data?.token) {
+//       const { token, user: loggedInUser } = res.data;
+
+//       // ✅ Save JWT and user info in sessionStorage
+//       sessionStorage.setItem("token", token);
+//       sessionStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
+
+//       // ✅ Set default header for future axios requests
+//       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+//       // ✅ Show personalized toast message with name
+//       toast.success(`Welcome back, ${loggedInUser.name}! 👋`);
+
+//       // ✅ Redirect based on role
+//       if (loggedInUser.role === "learner") {
+//         navigate("/learner-dashboard");
+//       } else if (loggedInUser.role === "instructor") {
+//         navigate("/instructor-dashboard");
+//       } else if (loggedInUser.role === "admin") {
+//         navigate("/admin-dashboard");
+//       } else {
+//         navigate("/");
+//       }
+//     } else {
+//       setErrorMessage(res.data?.message || "Invalid email or password");
+//     }
+//   } catch (error) {
+//     setErrorMessage(error?.response?.data?.message || "Server error. Try again.");
+//   } finally {
+//     setLoading(false);
+//   }
+// };
+
+const onSubmit = async (user) => {
   setErrorMessage("");
   setLoading(true);
 
@@ -73,25 +119,18 @@ const Login = () => {
     const res = await axios.post(
       "http://localhost:5000/api/auth/login",
       user,
-      {
-        headers: { "Content-Type": "application/json" },
-      }
+      { headers: { "Content-Type": "application/json" } }
     );
 
     if (res.data?.success && res.data?.token) {
       const { token, user: loggedInUser } = res.data;
 
-      // ✅ Save JWT and user info in sessionStorage
+      // Save JWT and user info
       sessionStorage.setItem("token", token);
       sessionStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
-
-      // ✅ Set default header for future axios requests
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-      // ✅ Show personalized toast message with name
-      toast.success(`Welcome back, ${loggedInUser.name}! 👋`);
-
-      // ✅ Redirect based on role
+      // Redirect based on role
       if (loggedInUser.role === "learner") {
         navigate("/learner-dashboard");
       } else if (loggedInUser.role === "instructor") {
@@ -101,15 +140,30 @@ const Login = () => {
       } else {
         navigate("/");
       }
+
+      // Optional toast
+      toast.success(`Welcome back, ${loggedInUser.name}! 👋`);
+
     } else {
       setErrorMessage(res.data?.message || "Invalid email or password");
     }
+
   } catch (error) {
-    setErrorMessage(error?.response?.data?.message || "Server error. Try again.");
+    const status = error?.response?.status;
+    const message = error?.response?.data?.message;
+
+    // ✅ Handle Blocked User
+    if (status === 403 && message?.includes("blocked")) {
+      navigate("/account-blocked"); // redirect to blocked page
+    } else {
+      setErrorMessage(message || "Server error. Try again.");
+    }
+
   } finally {
     setLoading(false);
   }
 };
+
 
 
   return (

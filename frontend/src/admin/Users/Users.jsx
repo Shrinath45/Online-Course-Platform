@@ -8,6 +8,29 @@ const Users = () => {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
 
+
+  const toggleUserStatus = async (id) => {
+    try {
+      const res = await axios.put(`/admin/toggle-user-status/${id}`);
+
+      toast.success(res.data.message);
+
+      setUsers((prev) =>
+        prev.map((u) =>
+          u.user_id === id
+            ? { ...u, status: res.data.status }
+            : u
+        )
+      );
+    } catch (error) {
+      toast.error(
+        error?.response?.data?.message || "Action failed"
+      );
+    }
+  };
+
+
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -65,6 +88,8 @@ const Users = () => {
                   <th className="p-4 text-left">Email</th>
                   <th className="p-4 text-left">Role</th>
                   <th className="p-4 text-left">Joined</th>
+                  <th className="p-4 text-left">Status</th>
+                  <th className="p-4 text-left">Action</th>
                 </tr>
               </thead>
 
@@ -80,21 +105,43 @@ const Users = () => {
                     <td className="p-4">
                       <span
                         className={`px-3 py-1 rounded-full text-xs font-semibold
-                          ${
-                            user.role === "admin"
-                              ? "bg-purple-100 text-purple-700"
-                              : user.role === "instructor"
+                          ${user.role === "admin"
+                            ? "bg-purple-100 text-purple-700"
+                            : user.role === "instructor"
                               ? "bg-blue-100 text-blue-700"
                               : "bg-green-100 text-green-700"
                           }`}
                       >
-                        {user.role}
+                        {user.role.toUpperCase()}
                       </span>
                     </td>
                     <td className="p-4">
                       {user.created_at
                         ? new Date(user.created_at).toLocaleDateString()
                         : "—"}
+                    </td>
+                    <td className="p-4">
+                      <span
+                        className={`px-3 py-1 rounded-full text-xs font-semibold
+      ${user.status === "blocked"
+                            ? "bg-red-100 text-red-700"
+                            : "bg-green-100 text-green-700"
+                          }`}
+                      >
+                        {user.status.toUpperCase()}
+                      </span>
+                    </td>
+                    <td className="p-4">
+                      <button
+                        onClick={() => toggleUserStatus(user.user_id)}
+                        className={`px-6 py-2 rounded-lg font-semibold text-white active:scale-95
+    ${user.status === "blocked"
+                            ? "!bg-green-600 hover:!bg-green-700"
+                            : "!bg-red-700 hover:!bg-red-800"
+                          }`}
+                      >
+                        {user.status === "blocked" ? "Unblock" : "Block"}
+                      </button>
                     </td>
                   </tr>
                 ))}

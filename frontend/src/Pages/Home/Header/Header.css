@@ -43,7 +43,7 @@
   text-decoration: none;
 }
 
-button {
+.btn{
   background-color: #4979D1;
   border: none;
   height: 40px;
@@ -54,7 +54,8 @@ button {
   transition: 0.3s;
 }
 
-button:hover {
+
+.btn:hover {
   background-color: #335ca0;
 }
 

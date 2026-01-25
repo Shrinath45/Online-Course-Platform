@@ -24,53 +24,52 @@ const IDashboard = () => {
     earningsData: [],
   });
 
-
   useEffect(() => {
-  if (!token) {
-    toast.error("Session expired. Please login again.");
-    return;
-  }
-
-  const fetchDashboard = async () => {
-    try {
-      const [
-        coursesRes,
-        studentsRes,
-        earningsRes,
-        instructorCoursesRes
-      ] = await Promise.all([
-        axios.get("/instructor/total-courses"),
-        axios.get("/instructor/total-students"),
-        axios.get("/instructor/total-earnings"),
-        axios.get("/instructor/get-courses"),
-      ]);
-
-      const allCourses = instructorCoursesRes?.data?.courses || [];
-
-      const recentCourses = Array.isArray(allCourses)
-        ? allCourses.slice(-4).reverse()
-        : [];
-
-      setStats({
-        totalCourses: coursesRes?.data?.totalCourses || 0,
-        totalStudents: studentsRes?.data?.totalStudents || 0,
-        totalEarnings: earningsRes?.data?.totalEarnings || 0,
-        pendingTasks: 0,
-        recentCourses,
-        earningsData: [],
-      });
-
-    } catch (error) {
-      console.error("Dashboard Error:", error);
-      toast.error(
-        error?.response?.data?.message || "Failed to load dashboard data"
-      );
+    if (!token) {
+      toast.error("Session expired. Please login again.");
+      return;
     }
-  };
 
-  fetchDashboard();
-}, [token]);
+    const fetchDashboard = async () => {
+      try {
+        const [
+          coursesRes,
+          studentsRes,
+          earningsRes,
+          instructorCoursesRes,
+          pendingRes,
+        ] = await Promise.all([
+          axios.get("/instructor/total-courses"),
+          axios.get("/instructor/total-students"),
+          axios.get("/instructor/total-earnings"),
+          axios.get("/instructor/get-courses"),
+          axios.get("/instructor/total-pending"), // ✅ pending courses
+        ]);
 
+        const allCourses = instructorCoursesRes?.data?.courses || [];
+
+        const recentCourses = Array.isArray(allCourses)
+          ? allCourses.slice(-4).reverse()
+          : [];
+
+        setStats({
+          totalCourses: coursesRes?.data?.totalCourses || 0,
+          totalStudents: studentsRes?.data?.totalStudents || 0,
+          totalEarnings: earningsRes?.data?.totalEarnings || 0,
+          pendingTasks: pendingRes?.data?.pendingCourses || 0, // ✅ FIXED
+          recentCourses,
+          earningsData: [],
+        });
+      } catch (error) {
+        console.error("Dashboard Error:", error);
+        toast.error(
+          error?.response?.data?.message || "Failed to load dashboard data"
+        );
+      }
+    };
+
+    fetchDashboard();
+  }, [token]);
 
   return (
     <>
@@ -107,9 +106,10 @@ const IDashboard = () => {
         </div>
 
         <h1 className="text-2xl font-bold py-4">Recent Courses</h1>
+
         <div className="flex gap-6 flex-wrap">
-          
-          {Array.isArray(stats.recentCourses) && stats.recentCourses.length === 0 ? (
+          {Array.isArray(stats.recentCourses) &&
+          stats.recentCourses.length === 0 ? (
             <p className="text-gray-500">No courses found</p>
           ) : (
             Array.isArray(stats.recentCourses) &&
@@ -125,49 +125,28 @@ const IDashboard = () => {
                 />
 
                 <div className="p-5">
-
-                  {/* Title */}
                   <h2 className="text-white text-xl font-semibold mb-2">
                     {course.title}
                   </h2>
 
-                  {/* Language Tag */}
                   <span className="px-3 py-1 bg-gray-700 text-xs text-gray-200 rounded-lg">
                     {course.language}
                   </span>
 
-                  {/* Live / Batch Tag */}
-                  {/* <span className="ml-2 px-3 py-1 bg-red-700 text-xs text-white rounded-lg">
-                    {course.live_status}
-                </span> */}
-
-                  {/* Description */}
-                  {/* <p className="text-gray-400 mt-3 text-sm line-clamp-2">
-                    {course.description}
-                </p> */}
-
-                  {/* Price Section */}
                   <div className="mt-4">
-                    <p className="text-green-400 text-xl font-bold">₹ {course.price}</p>
-
-                    {/* {course.old_price && (
-                        <p className="text-gray-500 line-through text-sm">₹ {course.old_price}</p>
-                    )} */}
+                    <p className="text-green-400 text-xl font-bold">
+                      ₹ {course.price}
+                    </p>
                   </div>
 
-                  {/* View Details Button */}
                   <button className="w-full mt-4 bg-emerald-500 hover:bg-emerald-600 text-black font-medium py-2 rounded-lg">
                     View Details
                   </button>
                 </div>
-
-                {/* Right: Status */}
-
               </div>
             ))
           )}
         </div>
-
       </div>
     </>
   );

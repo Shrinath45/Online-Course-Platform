@@ -77,33 +77,58 @@ export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    if (!email || !password)
-      return res.status(400).json({ success: false, message: "Email and password are required" });
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Email and password are required",
+      });
+    }
 
-    // ✅ Select all needed fields
+    // ✅ Fetch status also
     const [rows] = await db.query(
-      `SELECT user_id, name, email, role, password, profile_photo, phone, city, bio 
-       FROM users WHERE email = ?`,
+      `SELECT user_id, name, email, role, password, status,
+              profile_photo, phone, city, bio
+       FROM users
+       WHERE email = ?`,
       [email]
     );
 
-    if (rows.length === 0)
-      return res.status(404).json({ success: false, message: "User not found" });
+    if (rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
 
     const user = rows[0];
 
+    // 🚫 BLOCKED USER CHECK (MOST IMPORTANT)
+    if (user.status === "blocked") {
+      return res.status(403).json({
+        success: false,
+        message: "Your account has been blocked by admin. Please contact support. 'skillforgeplatform@gmail.com'",
+      });
+    }
+
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch)
-      return res.status(400).json({ success: false, message: "Invalid credentials" });
+    if (!isMatch) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid credentials",
+      });
+    }
 
     const token = jwt.sign(
-      { user_id: user.user_id, email: user.email, role: user.role },
+      {
+        user_id: user.user_id,
+        email: user.email,
+        role: user.role,
+      },
       process.env.JWT_SECRET,
       { expiresIn: "1d" }
     );
 
-    // ✅ Send all updated info
-    return res.json({
+    return res.status(200).json({
       success: true,
       message: "Login successful",
       token,
@@ -112,6 +137,7 @@ export const login = async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
+        status: user.status,
         profile_photo: user.profile_photo || null,
         phone: user.phone || null,
         city: user.city || null,
@@ -120,9 +146,13 @@ export const login = async (req, res) => {
     });
   } catch (error) {
     console.error("Login error:", error);
-    return res.status(500).json({ success: false, message: "Server error", error });
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
   }
 };
+
 
 
 /* ============================================================

@@ -32,7 +32,8 @@ import Adashboard from "./admin/dashboard/Adashboard.jsx";
 import Aheader from "./admin/Header/Aheader.jsx";
 import Aprofile from "./admin/profile/Aprofile.jsx";
 import Users from "./admin/Users/Users.jsx";
-import Acourses from "./admin/Courses/Acourses.jsx";
+import AccountBlocked from "./Pages/AccountBlocked.jsx";
+import Acourses from "./admin/Courses/AdminCourses.jsx";
 
 
 // Define router
@@ -46,6 +47,7 @@ const router = createBrowserRouter(
       <Route path="/contact" element={<Contact />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/account-blocked" element={<AccountBlocked />} />
       <Route path="/forgot" element={<ForgotPassword />} />
       <Route path="/reset/:token" element={<ResetPassword />} />
       <Route path="/admin-dashboard" element={<ProtectedRoute><Adashboard /></ProtectedRoute>} />

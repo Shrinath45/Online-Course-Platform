@@ -5,38 +5,55 @@ import toast from 'react-hot-toast';
 
 const CardContent = ({ course, onDelete }) => {
 
-   const token = sessionStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
 
 
     const [open, setOpen] = useState(false);
 
     const deleteClick = async () => {
-  const confirmDelete = window.confirm(
-    "Are you sure you want to delete this course?"
-  );
+        const confirmDelete = window.confirm(
+            "Are you sure you want to delete this course?"
+        );
 
-  if (!confirmDelete) return;
+        if (!confirmDelete) return;
 
-  try {
-    const res = await axios.delete(
-      `http://localhost:5000/api/instructor/delete-course/${course.course_id}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+        try {
+            const res = await axios.delete(
+                `http://localhost:5000/api/instructor/delete-course/${course.course_id}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
 
-    if (res.data.success) {
-      toast.success("Course Deleted Successfully");
-      // 🔥 Let parent remove course from state
-      onDelete(course.course_id);
-    }
-  } catch (error) {
-    console.error(error);
-    toast.error("Failed to delete course!");
-  }
-};
+            if (res.data.success) {
+                toast.success("Course Deleted Successfully");
+                // 🔥 Let parent remove course from state
+                onDelete(course.course_id);
+            }
+        } catch (error) {
+            console.error(error);
+            toast.error("Failed to delete course!");
+        }
+    };
+
+    const getStatusStyle = (status) => {
+        switch (status) {
+            case "APPROVED":
+                return "bg-green-600 text-white";
+            case "REJECTED":
+                return "bg-red-600 text-white";
+            case "PENDING":
+            default:
+                return "bg-yellow-500 text-black";
+        }
+    };
+
+    const formatStatus = (status) => {
+        if (!status) return "Pending";
+        return status.charAt(0) + status.slice(1).toLowerCase();
+    };
 
 
 
@@ -63,6 +80,13 @@ const CardContent = ({ course, onDelete }) => {
                     <span className="px-3 py-1 bg-gray-700 text-xs text-gray-200 rounded-lg">
                         {course.language}
                     </span>
+                    <span
+                        className={`ml-2 text-xs px-3 py-1 rounded-full font-semibold ${getStatusStyle(course.approval_status)}`}
+                    >
+                        {formatStatus(course.approval_status)}
+                    </span>
+
+
 
                     {/* Live / Batch Tag */}
                     {/* <span className="ml-2 px-3 py-1 bg-red-700 text-xs text-white rounded-lg">
