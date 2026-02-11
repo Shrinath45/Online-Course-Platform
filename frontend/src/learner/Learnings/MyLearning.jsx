@@ -1,5 +1,4 @@
-import LHeader from "./lHeader";
-import Header from "./lHeader";
+import LHeader from "../Header/Lheader";
 
 
 function MyLearning(){

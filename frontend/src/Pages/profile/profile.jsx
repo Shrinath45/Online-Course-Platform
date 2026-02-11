@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import Header from "../../learner/lHeader";
+import Header from "../Home/Header/Header";
 import {
     Grid,
     Box,
@@ -22,6 +22,7 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import InfoIcon from "@mui/icons-material/Info";
 import axios from "axios";
 import toast from "react-hot-toast";
+
 
 function Profile() {
     const storedUser = JSON.parse(sessionStorage.getItem("loggedInUser"));

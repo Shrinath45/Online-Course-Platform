@@ -18,10 +18,7 @@ import Signup from "./Pages/login/signup.jsx";
 import Login from "./Pages/login/signin.jsx";
 import ForgotPassword from "./Pages/login/forgot.jsx";
 import InstructorDashboard from "./instructor/dashboard/dashboard.jsx";
-import LearnerDashboard from "./learner/dashboard.jsx";
 import ResetPassword from "./Pages/login/reset.jsx";
-import LearnerCourses from "./learner/courses.jsx";
-import MyLearning from "./learner/mylearning.jsx";
 import ProtectedRoute from "./ProtecteedRoutes.jsx";
 import Profile from "./Pages/profile/profile.jsx";
 import ICourses from "./instructor/Courses/myCourses.jsx";
@@ -34,6 +31,9 @@ import Aprofile from "./admin/profile/Aprofile.jsx";
 import Users from "./admin/Users/Users.jsx";
 import AccountBlocked from "./Pages/AccountBlocked.jsx";
 import Acourses from "./admin/Courses/AdminCourses.jsx";
+import MyLearning from "./learner/Learnings/MyLearning.jsx";
+import LearnerCourses from "./learner/Courses/Lcourses.jsx";
+import LearnerDashboard from "./learner/dashboard/Ldashboard.jsx";
 
 
 // Define router
