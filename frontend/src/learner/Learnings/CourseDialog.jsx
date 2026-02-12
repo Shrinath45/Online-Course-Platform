@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -5,49 +6,69 @@ import {
   DialogActions,
   Button
 } from "@mui/material";
-import { useEffect, useState } from "react";
-import ViewCourse from "./ViewCourse";
 import axios from "../../api/axiosInstance";
+import ViewCourse from "./ViewCourse";
 import toast from "react-hot-toast";
 
 const CourseDialog = ({ open, onClose, course }) => {
 
-  const [loading, setLoading] = useState(false);
   const [enrolled, setEnrolled] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  // ✅ Check if already enrolled
+  const token = localStorage.getItem("token"); // ✅ JWT token
+
+  // ✅ Check enrollment when dialog opens
   useEffect(() => {
-    if (!course) return;
-
-    const checkEnroll = async () => {
-      try {
-        const res = await axios.post("/api/learner/check-enroll", {
-          courseId: course.course_id,
-        });
-
-        if (res.data.enrolled) {
-          setEnrolled(true);
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
-    checkEnroll();
+    if (course) {
+      checkEnrollment();
+    }
   }, [course]);
 
-  // ✅ Enroll function
+  const checkEnrollment = async () => {
+    try {
+      const res = await axios.post(
+        "/learner/check-access",
+        { courseId: course.course_id },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setEnrolled(res.data.enrolled);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // ✅ Enroll Course
   const handleEnroll = async () => {
-    if (loading || enrolled) return;
+    if (!course || enrolled) return;
+
     setLoading(true);
 
     try {
-      const res = await axios.post("/api/learner/enroll", {
-        courseId: course.course_id,
-      });
+      const res = await axios.post(
+        "/learner/enroll",
+        { courseId: course.course_id },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-      toast.success("Course Enrolled Successfully 🎉");
-      setEnrolled(true); // ✅ update button
+      if (res.data.success) {
+        setEnrolled(true);
+
+        if (res.data.paymentStatus === "PAID") {
+          toast.success("✅ Course Enrolled Successfully");
+        } else {
+          toast("💳 Payment Required");
+        }
+      }
+
     } catch (err) {
       toast.error(err.response?.data?.message || "Enroll failed");
     } finally {
@@ -69,9 +90,10 @@ const CourseDialog = ({ open, onClose, course }) => {
       </DialogContent>
 
       <DialogActions className="flex justify-between px-6">
+
         <div className="flex gap-3">
 
-          {/* ✅ Dynamic Button */}
+          {/* ✅ ENROLL BUTTON */}
           <Button
             variant="contained"
             color={enrolled ? "success" : "primary"}
@@ -84,11 +106,13 @@ const CourseDialog = ({ open, onClose, course }) => {
           <Button variant="contained" color="primary">
             Save
           </Button>
+
         </div>
 
         <Button onClick={onClose} variant="contained" color="error">
           Close
         </Button>
+
       </DialogActions>
 
     </Dialog>

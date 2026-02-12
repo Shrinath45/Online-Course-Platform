@@ -1,29 +1,7 @@
 import React, { useState } from "react";
-import axios from "../../api/axiosInstance";
-import toast from "react-hot-toast";
 
-const ViewCourse = ({ course, userId }) => {
+const ViewCourse = ({ course }) => {
   const [playVideo, setPlayVideo] = useState(false);
-  const [hasAccess, setHasAccess] = useState(false);
-
-  const checkAccess = async () => {
-    try {
-      const res = await axios.post("/learner/check-access", {
-        userId,
-        courseId: course.course_id
-      });
-
-      if (res.data.access) {
-        setHasAccess(true);
-        setPlayVideo(true);
-      } else {
-        toast.error("❌ Please purchase this course to watch videos!");
-      }
-
-    } catch (err) {
-      toast.error("Error checking access");
-    }
-  };
 
   if (!course) {
     return <p>Loading...</p>;
@@ -32,25 +10,31 @@ const ViewCourse = ({ course, userId }) => {
   return (
     <div className="p-10">
 
-      {/* VIDEO SECTION */}
+      {/* VIDEO / THUMBNAIL SECTION */}
       <div className="mb-10 w-full h-64 rounded-lg overflow-hidden relative">
 
         {!playVideo ? (
           <>
+            {/* THUMBNAIL */}
             <img
               src={course.thumbnail_url}
               alt="Course Thumbnail"
               className="w-full h-full object-cover"
             />
 
-            {/* PLAY BUTTON */}
+            {/* PLAY BUTTON (CENTERED LIKE YOUTUBE) */}
             {course.video_url && (
               <button
-                onClick={checkAccess}
+                onClick={() => setPlayVideo(true)}
                 className="absolute inset-0 flex items-center justify-center"
               >
                 <div className="w-16 h-16 bg-white bg-opacity-90 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="red" className="w-8 h-8 ml-1">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="red"
+                    className="w-8 h-8 ml-1"
+                  >
                     <path d="M8 5v14l11-7z" />
                   </svg>
                 </div>
@@ -58,19 +42,24 @@ const ViewCourse = ({ course, userId }) => {
             )}
           </>
         ) : (
-          <video controls autoPlay className="w-full h-full">
+          <video
+            controls
+            autoPlay
+            className="w-full h-full"
+            preload="metadata"
+          >
             <source src={course.video_url} type="video/mp4" />
           </video>
         )}
       </div>
 
-      {/* DETAILS */}
+      {/* COURSE DETAILS */}
       <div className="flex flex-col gap-5">
         <h1><b>Title:</b> {course.title}</h1>
         <h5><b>Description:</b> {course.description}</h5>
-        <h5><b>Language:</b> {course.language}</h5>
-        <h5><b>Fees:</b> ₹{course.price}</h5>
-        <h5><b>Instructor:</b> {course.instructor_name}</h5>
+        <h5><b>Course Language:</b> {course.language}</h5>
+        <h5><b>Course Fees:</b> {course.price}</h5>
+        <h5><b>Instructor Name:</b> {course.instructor_name}</h5>
       </div>
     </div>
   );

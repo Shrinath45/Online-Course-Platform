@@ -3,9 +3,9 @@ import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import authRoutes from "./routes/authRoutes.js";
-import learnerRoutes from "./routes/learnerRoutes.js";
 import instructorRoutes from "./routes/instructorRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
+import LearnerRoutes from "./routes/learnerRoutes.js";
 
 
 
@@ -40,7 +40,7 @@ app.get("/", (req, res) => {
 
 // ✅ API routes
 app.use("/api/auth", authRoutes);
-app.use("/api/learner", learnerRoutes);
+app.use("/api/learner", LearnerRoutes);
 app.use("/api/instructor", instructorRoutes);
 app.use("/api/admin", adminRoutes);
 
