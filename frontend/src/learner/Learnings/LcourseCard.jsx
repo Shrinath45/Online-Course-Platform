@@ -27,7 +27,7 @@ const LearnerCourseCard = ({ course }) => {
           onClick={() => setOpen(true)}
           className="w-full mt-3 bg-blue-600 hover:bg-blue-700 py-2 rounded"
         >
-          View Details
+          Watch
         </button>
 
       </div>

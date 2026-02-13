@@ -20,15 +20,25 @@ const LearnerCourseCard = ({ course }) => {
         <div>
             <h3 className="text-white mt-3 font-semibold">Course Type: <span className="text-green-600 font-medium">{course.course_type}</span> </h3>
             <h3 className="text-white mt-3 font-semibold">Language: <span className="text-green-600 font-medium">{course.language}</span> </h3>
+            <h3 className="text-white mt-3 font-semibold">Instructor: <span className="text-green-600 font-medium">{course.instructor_name}</span> </h3>
         </div>
 
         {/* VIEW DETAILS */}
         <button
           onClick={() => setOpen(true)}
-          className="w-full mt-3 bg-blue-600 hover:bg-blue-700 py-2 rounded"
+          className="w-full mt-3 bg-blue-600 hover:bg-blue-700 py-2 rounded font-semibold"
         >
           View Details
         </button>
+
+        <button
+          onClick={() => setOpen(true)}
+          className="w-full mt-3 bg-yellow-400 hover:bg-yellow-500 py-2 rounded font-semibold"
+        >
+          Save for later
+        </button>
+
+        
 
       </div>
 

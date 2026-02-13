@@ -1,38 +1,32 @@
 import React, { useState } from "react";
-import axios from "../../api/axiosInstance";
+import axios from "../../api/axiosInstance"; // ✅ correct
 import toast from "react-hot-toast";
 
-const ViewCourse = ({ course, userId }) => {
+const ViewCourse = ({ course }) => {
   const [playVideo, setPlayVideo] = useState(false);
-  const [hasAccess, setHasAccess] = useState(false);
 
   const checkAccess = async () => {
     try {
       const res = await axios.post("/learner/check-access", {
-        userId,
-        courseId: course.course_id
+        courseId: course.course_id, // ✅ only courseId
       });
 
-      if (res.data.access) {
-        setHasAccess(true);
+      if (res.data.enrolled) { // ✅ correct key
         setPlayVideo(true);
       } else {
-        toast.error("❌ Please purchase this course to watch videos!");
+        toast.error("❌ Please enroll or purchase this course!");
       }
 
     } catch (err) {
+      console.log(err);
       toast.error("Error checking access");
     }
   };
 
-  if (!course) {
-    return <p>Loading...</p>;
-  }
+  if (!course) return <p>Loading...</p>;
 
   return (
     <div className="p-10">
-
-      {/* VIDEO SECTION */}
       <div className="mb-10 w-full h-64 rounded-lg overflow-hidden relative">
 
         {!playVideo ? (
@@ -43,7 +37,6 @@ const ViewCourse = ({ course, userId }) => {
               className="w-full h-full object-cover"
             />
 
-            {/* PLAY BUTTON */}
             {course.video_url && (
               <button
                 onClick={checkAccess}
@@ -62,15 +55,6 @@ const ViewCourse = ({ course, userId }) => {
             <source src={course.video_url} type="video/mp4" />
           </video>
         )}
-      </div>
-
-      {/* DETAILS */}
-      <div className="flex flex-col gap-5">
-        <h1><b>Title:</b> {course.title}</h1>
-        <h5><b>Description:</b> {course.description}</h5>
-        <h5><b>Language:</b> {course.language}</h5>
-        <h5><b>Fees:</b> ₹{course.price}</h5>
-        <h5><b>Instructor:</b> {course.instructor_name}</h5>
       </div>
     </div>
   );
