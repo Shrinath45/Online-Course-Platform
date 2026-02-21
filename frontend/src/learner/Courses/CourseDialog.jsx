@@ -242,8 +242,9 @@ const CourseDialog = ({ open, onClose, course }) => {
 
         <div className="flex gap-3">
 
-          {/* ✅ Enroll Button */}
-          <Button
+     
+         {course.course_type=== "FREE" ? (
+           <Button
             variant="contained"
             color={enrolled ? "success" : "primary"}
             onClick={!enrolled ? handleEnroll : undefined}
@@ -252,8 +253,17 @@ const CourseDialog = ({ open, onClose, course }) => {
             {loading ? <CircularProgress size={22} color="inherit" /> :
               enrolled ? "Enrolled ✅" : "Enroll"}
           </Button>
+         ) : (
+           <Button
+            variant="contained"
+            color={enrolled ? "success" : "primary"}
+            disabled={loading || enrolled}
+          >
+            Purchase
+          </Button>
+         )}
 
-          {/* ❤️ Save Button (future feature) */}
+        
           
         </div>
 

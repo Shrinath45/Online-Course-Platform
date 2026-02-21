@@ -13,7 +13,7 @@ export const getAllCourses = async (req, res) => {
 
     const [courses] = await db.query(`
       SELECT c.course_id, c.instructor_id, c.title, c.thumbnail_url, 
-      c.video_url, c.video_duration_hours, c.description, c.price, 
+      c.video_url, c.video_duration_hours,c.video_duration_seconds, c.video_duration_minutes, c.description, c.price, 
       c.created_at, c.language, c.course_type, c.approval_status ,u.name AS instructor_name 
       FROM courses c 
       JOIN users u ON c.instructor_id = u.user_id 

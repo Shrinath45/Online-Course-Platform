@@ -6,6 +6,28 @@ import CourseDialog from "./CourseDialog";
 const LearnerCourseCard = ({ course }) => {
   const [open, setOpen] = useState(false);
 
+  const formatDuration = (totalSeconds) => {
+    if (!totalSeconds) return "00:00";
+
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    if (hours > 0) {
+      return `${hours.toString().padStart(2, "0")}:${minutes
+        .toString()
+        .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+    }
+
+    return `${minutes.toString().padStart(2, "0")}:${seconds
+      .toString()
+      .padStart(2, "0")}`;
+  };
+
+  console.log(course);
+
+
+
   return (
     <>
       <div className="bg-[#111] w-80 rounded-xl border border-gray-800 p-4">
@@ -18,9 +40,15 @@ const LearnerCourseCard = ({ course }) => {
           {course.title}
         </h2>
         <div>
-            <h3 className="text-white mt-3 font-semibold">Course Type: <span className="text-green-600 font-medium">{course.course_type}</span> </h3>
-            <h3 className="text-white mt-3 font-semibold">Language: <span className="text-green-600 font-medium">{course.language}</span> </h3>
-            <h3 className="text-white mt-3 font-semibold">Instructor: <span className="text-green-600 font-medium">{course.instructor_name}</span> </h3>
+          <h3 className="text-white mt-3 font-semibold">Course Type: <span className="text-green-600 font-medium">{course.course_type}</span> </h3>
+          <h3 className="text-white mt-3 font-semibold">Language: <span className="text-green-600 font-medium">{course.language}</span> </h3>
+          <h3 className="text-white mt-3 font-semibold">Instructor: <span className="text-green-600 font-medium">{course.instructor_name}</span> </h3>
+          <h3 className="text-white mt-3 font-semibold">
+            Duration:{" "}
+            <span className="text-green-600 font-medium">
+              {formatDuration(course.video_duration_seconds)}
+            </span>
+          </h3>
         </div>
 
         {/* VIEW DETAILS */}
@@ -38,7 +66,7 @@ const LearnerCourseCard = ({ course }) => {
           Save for later
         </button>
 
-        
+
 
       </div>
 
